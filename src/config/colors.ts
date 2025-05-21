@@ -1,0 +1,15 @@
+const hexToDecimal = (hex: string) => parseInt(hex.slice(1), 16);
+
+const makeColor = (hex: string) => ({
+  HEX: hex,
+  DECIMAL: hexToDecimal(hex),
+});
+
+export const Colors = {
+  BLACK: makeColor('#000000'),
+  BLUE: makeColor('#1976d2'),
+  GREEN: makeColor('#388e3c'),
+  LIGHT_BLUE: makeColor('#2fbdff'),
+  RED: makeColor('#d32f2f'),
+  WHITE: makeColor('#ffffff'),
+};
