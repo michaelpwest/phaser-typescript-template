@@ -1,0 +1,10 @@
+/android/
+/dist/
+/ios/
+/node_modules/
+/public/assets/icons/
+/public/manifest.webmanifest
+/resources/android/icon/
+/resources/android/splash/
+/resources/ios/icon/
+/resources/ios/splash/
