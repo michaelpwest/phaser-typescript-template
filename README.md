@@ -17,7 +17,7 @@
 
 ---
 
-I created this Phaser 4 template for developers who want to build and deploy mobile games using [Phaser 4](https://phaser.io/) and [TypeScript](https://typescriptlang.org/). The template includes a range of useful features such as mobile deployment with a custom app icon, responsive scaling for all screen sizes, persistent settings storage, multiple locales support, and debugging options.
+I created this Phaser 4 template for developers who want to build and deploy mobile games using [Phaser 4](https://phaser.io/) and [TypeScript](https://typescriptlang.org/). The template includes a range of useful features such as mobile deployment with a custom app icon, responsive scaling for all screen sizes, persistent storage, multiple locales support, and debugging options.
 
 The default game is a simple tap to jump game where the aim is to avoid the oncoming obstacles.
 
@@ -39,7 +39,7 @@ A demo of the game is available under https://mwestapps.com/phaser-demo/
 
 - **Deploy to mobile:** [Capacitor by Ionic](https://capacitorjs.com/) is used for mobile deployment, with commands like `npm run deploy:ios` and `npm run deploy:android` available for simple mobile deployment.
 - **App icon:** An app icon can be added to `resources/icon.png` and will be generated in the necessary formats for iOS or Android when deploying to mobile.
-- **Saving storage to mobile:** Mobile storage is supported for saving storage such as the high score chosen locale.
+- **Saving storage to mobile:** Mobile storage is supported for saving storage such as the chosen locale.
 - **Scaling to mobile:** Any mobile device in landscape will scale and display the game correctly, setting up a playable area using a 16:9 aspect ratio.
 
 ### Locales
@@ -50,9 +50,8 @@ A demo of the game is available under https://mwestapps.com/phaser-demo/
 
 Under `src/config/debug.ts` you can toggle the following debug options:
 
-- **Disable menu:** You can have the game start automatically without having to select `Start Game` by setting `disableMenu: true`.
 - **Disable sound:** You can disable sounds by setting `disableSound: true`.
-- **FPS:** The game will be locked to 60 FPS and you can enable the FPS counter by enabling `fps: true`.
+- **FPS:** The game will be locked to 60 FPS and you can enable the FPS counter by setting `fps: true`.
 - **Physics:** You can enable physics graphics such as hit boxes by setting `physics: true`.
 
 ## 🛠️ Installation <a id="installation"></a>

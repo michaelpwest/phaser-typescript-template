@@ -2,15 +2,15 @@ import { Preferences } from '@capacitor/preferences';
 import { Debug } from '../config';
 
 export class Util {
-  public static async getSetting(key: string, registry: Phaser.Data.DataManager): Promise<string | null> {
-    // Get a setting.
+  public static async getStorage(key: string, registry: Phaser.Data.DataManager): Promise<string | null> {
+    // Get an item from storage.
     const { value } = await Preferences.get({ key });
     registry.set(key, value);
     return value;
   }
 
-  public static updateSetting(key: string, value: string, registry: Phaser.Data.DataManager): void {
-    // Update a setting.
+  public static updateStorage(key: string, value: string, registry: Phaser.Data.DataManager): void {
+    // Update an item in storage.
     Preferences.set({
       key,
       value: value.toString(),

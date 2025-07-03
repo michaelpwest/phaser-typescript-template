@@ -6,10 +6,11 @@ const makeColor = (hex: string) => ({
 });
 
 export const Colors = {
+  BACKGROUND: makeColor('#101010'),
   BLACK: makeColor('#000000'),
-  BLUE: makeColor('#1e88e5'),
-  GREEN: makeColor('#43a047'),
-  ORANGE: makeColor('#fb8c00'),
-  RED: makeColor('#e53935'),
+  BLUE: makeColor('#1976d2'),
+  GRAY: makeColor('#616161'),
+  GREEN: makeColor('#388e3c'),
+  RED: makeColor('#d32f2f'),
   WHITE: makeColor('#ffffff'),
 };

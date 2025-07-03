@@ -1,5 +1,3 @@
-import { Properties } from '../config';
-
 export class BaseScene extends Phaser.Scene {
   constructor(sceneName: string) {
     super(sceneName);
@@ -16,14 +14,14 @@ export class BaseScene extends Phaser.Scene {
   protected resize(gameSize: Phaser.Structs.Size): void {
     // Get width and height.
     const { width, height } = gameSize;
-    const baseWidth = Properties.width;
-    const baseHeight = Properties.height;
+    const baseWidth = Number(this.game.config.width);
+    const baseHeight = Number(this.game.config.height);
 
     // Scale camera.
     const zoom = Math.min(width / baseWidth, height / baseHeight);
     this.cameras.main.setZoom(zoom);
 
     // Center camera.
-    this.cameras.main.centerOn(baseWidth * 0.5, baseHeight * 0.5);
+    this.cameras.main.centerOn(baseWidth / 2, baseHeight / 2);
   }
 }

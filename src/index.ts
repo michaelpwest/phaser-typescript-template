@@ -42,12 +42,12 @@ async function initLocales() {
   });
 
   // Get locale setting.
-  let locale = await Util.getSetting('locale', game.registry);
+  let locale = await Util.getStorage('locale', game.registry);
 
   // Set to default locale if no locale setting is found.
   if (!locale) {
     locale = 'en';
-    Util.updateSetting('locale', locale, game.registry);
+    Util.updateStorage('locale', locale, game.registry);
   }
 
   // Set game locale.

@@ -5,7 +5,7 @@ export const Font = (fontSize: number): FontInterface => {
   return {
     fontFamily: 'Open Sans Bold',
     fontSize: `${fontSize}px`,
-    color: Colors.WHITE.HEX,
+    color: Colors.BLACK.HEX,
   };
 };
 

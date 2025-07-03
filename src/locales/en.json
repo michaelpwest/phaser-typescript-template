@@ -1,11 +1,7 @@
 {
-  "CONTINUE": "CONTINUE",
   "GAME OVER": "GAME OVER",
-  "HI": "HI",
   "NO": "NO",
   "PLAY AGAIN": "PLAY AGAIN",
-  "QUIT": "QUIT",
-  "SCORE": "SCORE",
   "START GAME": "START GAME",
   "YES": "YES"
 }
