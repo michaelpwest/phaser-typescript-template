@@ -1,4 +1,4 @@
 {
-  "*.*": ["prettier --config .prettierrc --check --write"],
+  "*.{js,ts,json,css,md}": ["prettier --config .prettierrc --check --write"],
   "*.{js,ts}": ["eslint . --max-warnings=0"]
 }

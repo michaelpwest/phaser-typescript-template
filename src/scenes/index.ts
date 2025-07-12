@@ -1,4 +1,4 @@
 export * from './base-scene';
-export * from './game';
-export * from './hud';
+export * from './game-scene';
+export * from './hud-scene';
 export * from './scene-handler';

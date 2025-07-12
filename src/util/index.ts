@@ -6,6 +6,7 @@ export class Util {
     // Get an item from storage.
     const { value } = await Preferences.get({ key });
     registry.set(key, value);
+
     return value;
   }
 
@@ -18,11 +19,17 @@ export class Util {
     registry.set(key, value);
   }
 
-  public static async playSound(scene: Phaser.Scene, sound: string): Promise<void> {
-    // Play sound if sound is enabled.
-    if (Debug.disableSound) {
-      return;
+  public static playSound(sound: Phaser.Sound.BaseSound): void {
+    // Play sound if sound is enabled and not already playing.
+    if (!Debug.disableSound && !sound.isPlaying) {
+      sound.play();
     }
-    scene.sound.add(sound).play();
+  }
+
+  public static stopSound(sound: Phaser.Sound.BaseSound): void {
+    // Stop sound if sound is enabled and already playing.
+    if (!Debug.disableSound && sound.isPlaying) {
+      sound.stop();
+    }
   }
 }

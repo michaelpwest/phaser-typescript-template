@@ -1,2 +1,1 @@
-export * from './font.interface';
-export * from './object.interface';
+export * from './sprite.interface';

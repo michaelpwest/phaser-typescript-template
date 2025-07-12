@@ -1,7 +1,7 @@
 {
+  "FPS": "FPS",
   "GAME OVER": "FIN DEL JUEGO",
-  "NO": "NO",
-  "PLAY AGAIN": "JUGAR DE NUEVO",
-  "START GAME": "INICIAR JUEGO",
-  "YES": "SÍ"
+  "QUIT": "SALIR",
+  "RETRY": "REINTENTAR",
+  "START GAME": "INICIAR JUEGO"
 }

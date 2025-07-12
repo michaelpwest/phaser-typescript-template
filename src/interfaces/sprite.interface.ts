@@ -1,4 +1,4 @@
-export interface ObjectInterface {
+export interface SpriteInterface {
   scene: Phaser.Scene;
   x?: number;
   y?: number;
