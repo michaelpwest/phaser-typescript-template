@@ -1,20 +1,68 @@
-import { Colors, Constants, Frames, Textures } from '../config';
+import {
+  ActionButtonStates,
+  Animations,
+  Colors,
+  ControllerStates,
+  PlayerAttrs,
+  Registry,
+  Sounds,
+  Textures,
+} from '../config';
 import { ObjectInterface } from '../interfaces';
+import { Util } from '../util';
 import { BaseSprite } from './base-sprite';
 
 export class Player extends BaseSprite {
+  private wrapRectangle: Phaser.Geom.Rectangle;
+  private runSound: Phaser.Sound.BaseSound;
+  private jumpSound: Phaser.Sound.BaseSound;
+
   constructor(params: ObjectInterface) {
     // Set player texture, frame, and x / y starting position.
     params.texture = Textures.PLAYER;
-    params.frame = Frames.PLAYER.RUN[0];
-    params.x = Constants.PLAYER.X;
-    params.y = Constants.PLAYER.Y;
+    params.x = PlayerAttrs.X;
+    params.y = PlayerAttrs.Y;
     super(params);
 
     // Initialize player.
-    this.initSprite(Constants.PLAYER.SCALE);
+    this.initSprite(PlayerAttrs.SCALE);
     this.initPhysics();
-    this.initAnimation();
+    this.initInput();
+    this.initAnimations();
+    this.initSounds();
+
+    // Add number to scene.
+    this.scene.add.existing(this);
+  }
+
+  public update(): void {
+    // Update movement.
+    this.updateMovement();
+
+    // Update animation.
+    this.updateAnimation();
+
+    // Wrap player within world bounds.
+    Phaser.Actions.WrapInRectangle([this], this.wrapRectangle);
+  }
+
+  protected initPhysics(): void {
+    // Initialize physics.
+    super.initPhysics();
+
+    // Set player origin.
+    this.setOrigin(0.5, 1);
+
+    // Set player hitbox.
+    this.body.setSize(PlayerAttrs.HITBOX.WIDTH, PlayerAttrs.HITBOX.HEIGHT);
+
+    // Add rectangle for wrapping player within world bounds.
+    this.wrapRectangle = new Phaser.Geom.Rectangle(
+      0,
+      0,
+      Number(this.scene.game.config.width),
+      Number(this.scene.game.config.height),
+    );
 
     // Add mask to player so it only displays within world bounds.
     const maskRect = this.scene.add
@@ -29,45 +77,87 @@ export class Player extends BaseSprite {
       .setVisible(false);
     this.enableFilters();
     this.filters?.external.addMask(maskRect);
-
-    // Add number to scene.
-    this.scene.add.existing(this);
   }
 
-  public update(): void {
-    // Move player.
-    this.x += 5;
-
-    // Wrap player within world bounds.
-    const wrapRect = new Phaser.Geom.Rectangle(
-      0,
-      0,
-      Number(this.scene.game.config.width),
-      Number(this.scene.game.config.height),
-    );
-    Phaser.Actions.WrapInRectangle([this], wrapRect);
-  }
-
-  protected initPhysics(): void {
-    // Initialize physics.
-    super.initPhysics();
-
-    this.setOrigin(0.5, 1);
-
-    // Set player hitbox.
-    this.body.setSize(Constants.PLAYER.HITBOX.WIDTH, Constants.PLAYER.HITBOX.HEIGHT);
-  }
-
-  private initAnimation(): void {
-    // Add and play run animation.
-    this.anims.create({
-      key: Constants.PLAYER.ANIMATIONS.RUN,
-      frames: this.anims.generateFrameNumbers(Textures.PLAYER, {
-        frames: Frames.PLAYER.RUN,
-      }),
-      frameRate: Constants.PLAYER.FRAME_RATE,
-      repeat: -1,
+  private initAnimations(): void {
+    // Initialize animations.
+    Object.values(Animations.PLAYER).forEach((animation) => {
+      this.anims.create({
+        key: animation.NAME,
+        frames: this.anims.generateFrameNumbers(Textures.PLAYER, {
+          frames: animation.FRAMES,
+        }),
+        frameRate: PlayerAttrs.FRAME_RATE,
+        repeat: -1,
+      });
     });
-    this.play(Constants.PLAYER.ANIMATIONS.RUN);
+  }
+
+  private initSounds(): void {
+    // Initialize sounds.
+    this.runSound = this.scene.sound.add(Sounds.RUN, { loop: true });
+    this.jumpSound = this.scene.sound.add(Sounds.JUMP);
+  }
+
+  private updateMovement(): void {
+    // Update movement.
+    const keyboard = this.cursors;
+    const controller = this.scene.registry.get(Registry.CONTROLLER);
+    const moveLeft = keyboard.left.isDown || controller === ControllerStates.LEFT;
+    const moveRight = keyboard.right.isDown || controller === ControllerStates.RIGHT;
+    const jump =
+      keyboard.space.isDown || this.scene.registry.get(Registry.ACTION_BUTTON) === ActionButtonStates.PRESSED;
+    if (this.body && (keyboard || controller)) {
+      if (moveLeft) {
+        // Move player left.
+        this.body.setVelocityX(-PlayerAttrs.VELOCITY.MOVE);
+        this.setFlipX(true);
+      } else if (moveRight) {
+        // Move player right.
+        this.body.setVelocityX(PlayerAttrs.VELOCITY.MOVE);
+        this.setFlipX(false);
+      } else {
+        // Stop player.
+        this.body.setVelocityX(0);
+      }
+      if ((jump || this.scene.registry.get(Registry.ACTION_BUTTON)) && this.body.onFloor()) {
+        // Jump player.
+        this.body.setVelocityY(PlayerAttrs.VELOCITY.JUMP);
+
+        // Play jump sound.
+        Util.playSound(this.jumpSound);
+      }
+    }
+  }
+
+  private updateAnimation(): void {
+    // Check whether the player is moving / is grounded.
+    const isMoving = this.body.velocity.x !== 0;
+    const isGrounded = this.body.onFloor();
+
+    if (!isGrounded) {
+      if (this.body.velocity.y < 0) {
+        // Play jump animation.
+        this.anims.play(Animations.PLAYER.JUMP.NAME, true);
+      } else if (this.body.velocity.y > 0) {
+        // Play fall animation.
+        this.anims.play(Animations.PLAYER.FALL.NAME, true);
+      }
+
+      // Stop run sound.
+      Util.stopSound(this.runSound);
+    } else if (isMoving) {
+      // Play run animation.
+      this.anims.play(Animations.PLAYER.RUN.NAME, true);
+
+      // Play run sound.
+      Util.playSound(this.runSound);
+    } else {
+      // Play idle animation.
+      this.anims.play(Animations.PLAYER.IDLE.NAME, true);
+
+      // Stop run sound.
+      Util.stopSound(this.runSound);
+    }
   }
 }

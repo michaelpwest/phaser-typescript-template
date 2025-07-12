@@ -1,44 +1,46 @@
-import { Constants, Textures } from '../config';
+import { GameStates, Registry, Scenes, SoundFiles, Sounds, TextureFiles, Textures } from '../config';
 import { BaseScene } from './base-scene';
 
 export class SceneHandler extends BaseScene {
   constructor() {
-    super('SceneHandler');
+    super(Scenes.SCENE_HANDLER);
   }
 
   public preload(): void {
     // Load background image.
-    this.load.image(Textures.BACKGROUND, 'assets/images/background.png');
+    this.load.image(Textures.BACKGROUND, TextureFiles.BACKGROUND);
 
     // Load ground image.
-    this.load.image(Textures.GROUND, 'assets/images/ground.png');
+    this.load.image(Textures.GROUND, TextureFiles.GROUND);
 
     // Load player sprite sheet.
-    this.load.spritesheet(Textures.PLAYER, 'assets/images/player.png', {
+    this.load.spritesheet(Textures.PLAYER, TextureFiles.PLAYER, {
       frameWidth: 32,
       frameHeight: 32,
     });
 
     // Load HUD sprite sheet.
-    this.load.spritesheet(Textures.HUD, 'assets/images/hud.png', {
+    this.load.spritesheet(Textures.HUD, TextureFiles.HUD, {
       frameWidth: 16,
       frameHeight: 16,
     });
 
     // Load sounds.
-    this.load.audio('menu-select', ['assets/sounds/menu-select.wav']);
-    this.load.audio('tap', ['assets/sounds/tap.wav']);
-    this.load.audio('game-over', ['assets/sounds/game-over.wav']);
+    this.load.audio(Sounds.RUN, SoundFiles.RUN);
+    this.load.audio(Sounds.JUMP, SoundFiles.JUMP);
+    this.load.audio(Sounds.MENU_SELECT, SoundFiles.MENU_SELECT);
+    this.load.audio(Sounds.START_GAME, SoundFiles.START_GAME);
+    this.load.audio(Sounds.GAME_OVER, SoundFiles.GAME_OVER);
   }
 
   public create(): void {
     super.create();
 
     // Start HUD scene.
-    this.scene.launch('Hud');
+    this.scene.launch(Scenes.HUD);
 
     // Update game state to menu.
-    this.registry.set('game-state', Constants.GAME.STATES.MENU);
+    this.registry.set(Registry.GAME_STATE, GameStates.MENU);
 
     // Initialize events();
     this.initEvents();
@@ -46,21 +48,23 @@ export class SceneHandler extends BaseScene {
 
   private initEvents(): void {
     // Handle game state change.
-    this.registry.events.on('changedata-game-state', (parent: Phaser.Data.DataManager, gameState: string) => {
-      console.log(gameState);
-      switch (gameState) {
-        case Constants.GAME.STATES.STARTED:
-          // Start game.
-          this.scene.start('Game');
-          break;
-        case Constants.GAME.STATES.MENU:
-        case Constants.GAME.STATES.GAME_OVER:
-          // Stop game.
-          this.scene.stop('Game');
-          break;
-        default:
-          break;
-      }
-    });
+    this.registry.events.on(
+      `changedata-${Registry.GAME_STATE}`,
+      (parent: Phaser.Data.DataManager, gameState: string) => {
+        switch (gameState) {
+          case GameStates.STARTED:
+            // Start game.
+            this.scene.start(Scenes.GAME);
+            break;
+          case GameStates.MENU:
+          case GameStates.GAME_OVER:
+            // Stop game.
+            this.scene.stop(Scenes.GAME);
+            break;
+          default:
+            break;
+        }
+      },
+    );
   }
 }

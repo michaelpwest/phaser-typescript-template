@@ -7,12 +7,19 @@ import tseslint from 'typescript-eslint';
 
 export default defineConfig([
   {
-    ignores: ['android/', 'dist/', 'ios/', 'node_modules/'],
+    ignores: ['android/', 'dist/', 'ios/'],
   },
-  { files: ['**/*.{js,mjs,cjs,ts}'] },
-  { files: ['**/*.{js,mjs,cjs,ts}'], languageOptions: { globals: globals.browser } },
-  { files: ['**/*.{js,mjs,cjs,ts}'], plugins: { js }, extends: ['js/recommended'] },
-  tseslint.configs.recommended,
+  {
+    files: ['**/*.{js,mjs,cjs,ts}'],
+    languageOptions: {
+      globals: globals.browser,
+    },
+    plugins: {
+      js,
+    },
+    extends: ['js/recommended'],
+  },
+  ...tseslint.configs.recommended,
   {
     plugins: {
       prettier: prettierPlugin,
@@ -23,9 +30,9 @@ export default defineConfig([
       'linebreak-style': ['error', 'unix'],
       'no-console': 'off',
       'no-trailing-spaces': ['error'],
-      'prettier/prettier': ['warn', { singleQuote: true, tabWidth: 2, trailingComma: 'all' }],
       quotes: ['error', 'single'],
       semi: ['error', 'always'],
+      'prettier/prettier': 'error',
     },
   },
   prettierConfig,

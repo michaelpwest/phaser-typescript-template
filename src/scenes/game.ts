@@ -1,4 +1,4 @@
-import { Constants, Textures } from '../config';
+import { GroundAttrs, Scenes, Textures } from '../config';
 import { Player } from '../objects';
 import { BaseScene } from './base-scene';
 
@@ -7,7 +7,7 @@ export class Game extends BaseScene {
   private groundCollider: Phaser.GameObjects.TileSprite;
 
   constructor() {
-    super('Game');
+    super(Scenes.GAME);
   }
 
   public create(): void {
@@ -18,8 +18,10 @@ export class Game extends BaseScene {
   }
 
   public update(): void {
-    // Update player.
-    this.player.update();
+    if (this.player) {
+      // Update player.
+      this.player.update();
+    }
   }
 
   private startGame(): void {
@@ -33,13 +35,13 @@ export class Game extends BaseScene {
     const ground = this.add
       .tileSprite(
         0,
-        Constants.GROUND.Y,
-        Number(this.game.config.width) / Constants.GROUND.SCALE,
+        GroundAttrs.Y,
+        Number(this.game.config.width) / GroundAttrs.SCALE,
         groundImage.height,
         Textures.GROUND,
       )
-      .setScale(Constants.GROUND.SCALE)
-      .setOrigin(0, 0);
+      .setScale(GroundAttrs.SCALE)
+      .setOrigin(0);
 
     // Add ground collider.
     this.groundCollider = this.physics.add.existing(ground, true);

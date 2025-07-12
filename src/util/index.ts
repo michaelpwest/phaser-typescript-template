@@ -18,11 +18,23 @@ export class Util {
     registry.set(key, value);
   }
 
-  public static async playSound(scene: Phaser.Scene, sound: string): Promise<void> {
-    // Play sound if sound is enabled.
+  public static async playSound(sound: Phaser.Sound.BaseSound): Promise<void> {
+    // Play sound if sound is enabled and not already playing.
     if (Debug.disableSound) {
       return;
     }
-    scene.sound.add(sound).play();
+    if (!sound.isPlaying) {
+      sound.play();
+    }
+  }
+
+  public static async stopSound(sound: Phaser.Sound.BaseSound): Promise<void> {
+    // Stop sound if sound is enabled and already playing.
+    if (Debug.disableSound) {
+      return;
+    }
+    if (sound.isPlaying) {
+      sound.stop();
+    }
   }
 }

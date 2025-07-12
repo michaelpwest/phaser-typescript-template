@@ -17,4 +17,15 @@ export abstract class BaseSprite extends Phaser.GameObjects.Sprite {
     // Initialize physics.
     this.scene.physics.world.enable(this);
   }
+
+  protected initInput(): void {
+    // Enable input.
+    const keyboard = this.scene.input.keyboard;
+    if (keyboard) {
+      this.cursors = keyboard.createCursorKeys();
+    }
+
+    // Enable multi-touch support.
+    this.scene.input.addPointer(2);
+  }
 }
