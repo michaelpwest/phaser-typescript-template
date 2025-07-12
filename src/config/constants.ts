@@ -1,75 +1,94 @@
-export const Constants = {
-  GAME: {
-    STATES: {
-      MENU: 'menu',
-      STARTED: 'started',
-      GAME_OVER: 'game-over',
-    },
-  },
-  PLAYER: {
-    SCALE: 5,
-    X: 960,
-    Y: 700,
-    HITBOX: {
-      WIDTH: 32,
-      HEIGHT: 32,
-    },
-    FRAME_RATE: 10,
-    ANIMATIONS: {
-      RUN: 'run',
-    },
-  },
-  BACKGROUND: {
-    SCALE: 2,
-    SCROLL: -1,
-  },
-  GROUND: {
-    SCALE: 3,
-    X: 0,
-    Y: 700,
+export const Registry = {
+  GAME_STATE: 'game-state',
+  JOYSTICK: 'joystick',
+  ACTION_BUTTON: 'action-button',
+};
+
+export const GameStates = {
+  MENU: 'menu',
+  STARTED: 'started',
+  GAME_OVER: 'game-over',
+};
+
+export const ActionButtonStates = {
+  PRESSED: 'pressed',
+};
+
+export const PlayerAttrs = {
+  SCALE: 5,
+  X: 540,
+  Y: 1100,
+  HITBOX: {
+    WIDTH: 32,
     HEIGHT: 32,
-    SCROLL: 1,
   },
-  HUD: {
-    CONTAINER: {
-      X: 384,
-      Y: 324,
-      WIDTH: 1152,
-      HEIGHT: 432,
-      STROKE: 5,
-      ALPHA: 0.6,
+  VELOCITY: {
+    MOVE: 500,
+    JUMP: -1000,
+  },
+  FRAME_RATE: 10,
+};
+
+export const BackgroundAttrs = {
+  SCALE: 2,
+  SCROLL: -1,
+};
+
+export const GroundAttrs = {
+  SCALE: 3,
+  Y: 1200,
+};
+
+export const HudAttrs = {
+  CONTAINER: {
+    WIDTH: 864,
+    HEIGHT: 576,
+    STROKE: 5,
+    ALPHA: 0.6,
+  },
+  START_GAME: {
+    Y: 100,
+  },
+  FLAGS: {
+    SCALE: 8,
+    EN: {
+      X: 250,
+      Y: 476,
     },
-    START_GAME: {
-      X: 576,
-      Y: 120,
+    ES: {
+      X: -250,
+      Y: 476,
     },
-    EN_FLAG: {
-      X: 384,
-      Y: 312,
-    },
-    ES_FLAG: {
-      X: 768,
-      Y: 312,
-    },
-    GAME_OVER: {
-      X: 576,
-      Y: 120,
-    },
-    RETRY: {
-      X: 384,
-      Y: 312,
-    },
-    QUIT: {
-      X: 768,
-      Y: 312,
-    },
-    ESCAPE: {
-      X: 20,
-      Y: 20,
-    },
-    FPS: {
-      X: 1900,
-      Y: 20,
-    },
+  },
+  GAME_OVER: {
+    Y: 100,
+  },
+  RETRY: {
+    X: 250,
+    Y: 476,
+  },
+  QUIT: {
+    X: -250,
+    Y: 476,
+  },
+  JOYSTICK: {
+    SCALE: 10,
+    X: 150,
+    Y: -80,
+    RADIUS: 25,
+  },
+  ACTION_BUTTON: {
+    SCALE: 10,
+    X: -150,
+    Y: -80,
+  },
+  ESCAPE_BUTTON: {
+    SCALE: 10,
+    X: 30,
+    Y: 30,
+  },
+  FPS: {
+    X: -30,
+    Y: 30,
   },
 };

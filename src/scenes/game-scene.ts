@@ -1,45 +1,44 @@
-import { Constants, Textures } from '../config';
-import { Player } from '../objects';
-import { BaseScene } from './base-scene';
+import { GroundAttrs, Scenes, Textures } from '../config';
+import { PlayerSprite } from '../sprites';
 
-export class Game extends BaseScene {
-  private player: Player;
+export class GameScene extends Phaser.Scene {
+  private player: PlayerSprite;
   private groundCollider: Phaser.GameObjects.TileSprite;
 
   constructor() {
-    super('Game');
+    super(Scenes.GAME);
   }
 
   public create(): void {
-    super.create();
-
     // Start game.
     this.startGame();
   }
 
   public update(): void {
-    // Update player.
-    this.player.update();
+    if (this.player) {
+      // Update player.
+      this.player.update();
+    }
   }
 
   private startGame(): void {
     // Add player.
-    this.player = new Player({
+    this.player = new PlayerSprite({
       scene: this,
     });
 
     // Add ground.
-    const groundImage = this.textures.get(Textures.GROUND).getSourceImage();
+    const groundImage = this.textures.get(Textures.GROUND.NAME).getSourceImage();
     const ground = this.add
       .tileSprite(
         0,
-        Constants.GROUND.Y,
-        Number(this.game.config.width) / Constants.GROUND.SCALE,
+        GroundAttrs.Y,
+        Number(this.game.config.width) / GroundAttrs.SCALE,
         groundImage.height,
-        Textures.GROUND,
+        Textures.GROUND.NAME,
       )
-      .setScale(Constants.GROUND.SCALE)
-      .setOrigin(0, 0);
+      .setScale(GroundAttrs.SCALE)
+      .setOrigin(0);
 
     // Add ground collider.
     this.groundCollider = this.physics.add.existing(ground, true);

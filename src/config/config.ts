@@ -1,32 +1,43 @@
-import { Game, Hud, SceneHandler } from '../scenes';
+import VirtualJoystickPlugin from 'phaser3-rex-plugins/plugins/virtualjoystick-plugin';
+import { GameScene, HudScene, SceneHandler } from '../scenes';
 import { Debug } from './debug';
 
 export const Config: Phaser.Types.Core.GameConfig = {
   type: Phaser.AUTO,
   parent: 'game',
-  width: 1920,
-  height: 1080,
+  width: 1080,
+  height: 1920,
   fps: {
     target: 60,
     forceSetTimeOut: true,
   },
   pixelArt: true,
   roundPixels: true,
+  render: {
+    antialias: false,
+  },
   scale: {
-    mode: Phaser.Scale.RESIZE,
+    mode: Phaser.Scale.FIT,
     autoCenter: Phaser.Scale.CENTER_BOTH,
   },
   physics: {
     default: 'arcade',
     arcade: {
       debug: Debug.physics,
-      width: 1920,
-      height: 1080,
       gravity: {
         x: 0,
-        y: 500,
+        y: 2000,
       },
     },
   },
-  scene: [SceneHandler, Hud, Game],
+  plugins: {
+    global: [
+      {
+        key: 'rexVirtualJoystick',
+        plugin: VirtualJoystickPlugin,
+        start: true,
+      },
+    ],
+  },
+  scene: [SceneHandler, HudScene, GameScene],
 };

@@ -1,6 +1,4 @@
 import { App } from '@capacitor/app';
-import { ScreenOrientation } from '@capacitor/screen-orientation';
-import { StatusBar } from '@capacitor/status-bar';
 import i18n from 'i18n-for-browser';
 import Phaser from 'phaser';
 import { Config } from './config';
@@ -11,15 +9,8 @@ import { Util } from './util';
 let game: Phaser.Game;
 
 (async () => {
-  try {
-    // Lock screen orientation as landscape.
-    await ScreenOrientation.lock({ orientation: 'landscape' });
-
-    // Hide status bar.
-    await StatusBar.hide();
-  } catch (error) {
-    console.error(error);
-  }
+  // Initialize font.
+  await initFont();
 
   // Load game instance.
   game = new Phaser.Game(Config);
@@ -30,6 +21,13 @@ let game: Phaser.Game;
   // Initialize events.
   initEvents();
 })();
+
+async function initFont() {
+  const font = new FontFace('PressStart2P', `url(assets/fonts/PressStart2P.ttf)`);
+  const loadedFont = await font.load();
+  document.fonts.add(loadedFont);
+  await document.fonts.ready;
+}
 
 async function initLocales() {
   // Initialize i18n.

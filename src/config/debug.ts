@@ -1,5 +1,5 @@
 export const Debug = {
-  disableSound: true,
+  disableSound: false,
   fps: true,
   physics: false,
 };
